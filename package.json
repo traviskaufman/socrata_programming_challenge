@@ -1,0 +1,14 @@
+{
+  "name": "rotation-amt",
+  "description": "My answer for Socrata's Programming Challenge for Front-End Engineers using Javascript/NodeJS",
+  "version": "1.0.0",
+  "main": "./index",
+  "scripts": {
+    "test": "./tests.sh"
+  },
+  "bin": "./bin/rotation-amt",
+  "devDependencies": {
+    "jasmine-node": "*",
+    "jslint": "*"
+  }
+}
