@@ -39,7 +39,9 @@ module.exports = function(grunt) {
   // I like Jasmine better than NodeUnit or QUnit
   grunt.registerTask('jasmine', 'run jasmine tests in NodeJS', function() {
     grunt.helper('sh',
-           './node_modules/jasmine-node/bin/jasmine-node --color --verbose tests/');
+     './node_modules/jasmine-node/bin/jasmine-node --color --verbose tests/');
     grunt.helper('notice', 'All tests passed!');
   });
+
+  grunt.registerTask('default', 'lint jasmine');
 };
