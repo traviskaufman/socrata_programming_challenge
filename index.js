@@ -99,7 +99,7 @@ module.exports = {
   _getIsTimeValid: function(rawMinutes) {
     return ((rawMinutes >= this._constants.MIN_RAW_MINUTES) &&
             (rawMinutes <= this._constants.MAX_RAW_MINUTES));
-  }
+  },
 
   /**
    * Takes a time string "[H]H:MM (AM|PM)" and returns a triple containing the
