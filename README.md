@@ -1,6 +1,8 @@
 Socrata Front-End Engineer Programming Challenge
 ================================================
 
+Overview
+--------
 This node module represents my answer to Socrata's [Front-End Engineer
 Programming
 Challenge](http://www.socrata.com/career/front-end-software-engineer/),
@@ -15,3 +17,37 @@ move the minute hand, the hour hand moves automatically. The minute hand may
 only move in the clockwise direction. You may assume that the minute hand
 always ends up on a perfect minute boundary."
 </blockquote>
+
+Installation
+------------
+```sh
+$ git clone https://github.com/traviskaufman/socrata_programming_challenge.git
+$ cd socrata_programming_challenge
+$ npm install . # add -g to install globally so you can use rotation-amt
+```
+
+Run the Tests
+-------------
+```sh
+$ npm test
+```
+
+Verify that it works
+--------------------
+```sh
+$ ./bin/rotation-amt [-h, --help] START_TIME END_TIME
+```
+
+Examples
+--------
+###Running the command line script
+```sh
+$ ./bin/rotation-amt "10:15 AM" "12:45 PM"
+900 degrees (2.5 rotations)
+```
+
+###Using it as a nodeJS Module
+```javascript
+var degRotnAmtCalc = require('./index');
+degRotnAmtCalc.getDegreeRotationAmt('10:15 AM', '12:45 PM'); // 900 
+```
