@@ -123,7 +123,7 @@ module.exports = {
    * @private
    */
   _parseTime: function(timeStr) {
-    var timeRE = /(\d{1,2})\:(\d{2})\s{0,1}(AM|PM)/;
+    var timeRE = /^(\d{1,2})\:(\d{2})\s{0,1}(AM|PM)$/;
     var timeArray = timeStr.match(timeRE);
 
     if (!timeArray || timeArray.length !== 4) {
