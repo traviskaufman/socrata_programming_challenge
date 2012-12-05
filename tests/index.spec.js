@@ -23,4 +23,18 @@ describe('The degree rotation amount calculator', function() {
     expect(degRotnCalc.getDegreeRotationAmt(t1, t2)).toEqual(8280);
   });
 
+  it('returns a negative value when given an invalid string', function() {
+    var t1 = '7:00 AM';
+    var bogus = '12.59pm';
+    var whatShouldBeAnErrCode = degRotnCalc.getDegreeRotationAmt(t1, bogus);
+    expect(whatShouldBeAnErrCode).toEqual(degRotnCalc.errCodes.E_FORMAT);
+  });
+
+  it('returns a negative value when given a non-existant time', function() {
+    var bogus = '80:00 PM';
+    var t2 = '2:30 PM';
+    var whatShouldBeAnErrCode = degRotnCalc.getDegreeRotationAmt(bogus, t2);
+    expect(whatShouldBeAnErrCode).toEqual(degRotnCalc.errCodes.E_INVALID);
+  });
+
 });

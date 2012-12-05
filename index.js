@@ -29,26 +29,24 @@ module.exports = {
   * @this module.exports
   */
   getDegreeRotationAmt: function(originalTime, desiredTime) {
-    /** @const **/
-    var EINVALID = -1;
 
     var originalTimeArray = this._parseTime(originalTime);
     var desiredTimeArray = this._parseTime(desiredTime);
 
-    // Make sure the times strings were valid
+    // Make sure the times strings weren't formatted correctly
     if (!originalTimeArray || !desiredTimeArray) {
-      return EINVALID;
+      return this.errCodes.E_FORMAT;
+    }
+
+    // Make sure that the time ranges are valid. E.g. the user doesn't specify
+    // "56:99 PM". Not really necessary but nice to have.
+    if (!this._getIsTimeValid(originalTimeArray) ||
+        !this._getIsTimeValid(desiredTimeArray)) {
+      return this.errCodes.E_INVALID;
     }
 
     var originalRawMinutes = this._toRawMinutes(originalTimeArray);
     var desiredRawMinutes = this._toRawMinutes(desiredTimeArray);
-
-    // Make sure that the time ranges are valid. E.g. the user doesn't specify
-    // "56:99 PM". Not really necessary but nice to have.
-    if (!this._getIsTimeValid(originalRawMinutes) ||
-        !this._getIsTimeValid(desiredRawMinutes)) {
-      return EINVALID;
-    }
 
     // Calculate the absolute difference between times
     var minutesDifference = Math.abs(originalRawMinutes - desiredRawMinutes);
@@ -58,6 +56,16 @@ module.exports = {
     }
 
     return minutesDifference * this._constants.DEGREES_PER_MINUTE;
+  },
+
+  /**
+   * Error codes.
+   *
+   * @const
+   */
+  errCodes: {
+    E_FORMAT: -1, // Bad Time String Format (Not "[H]H:MM (AM|PM)")
+    E_INVALID: -2 // Time given is invalid (i.e. 13:21 AM)
   },
 
   /**
@@ -72,33 +80,33 @@ module.exports = {
 
     DEGREES_PER_MINUTE: 6, // Amt of degrees minute hand has to rotate per min.
 
-    MAX_RAW_MINUTES: 1439, // "11:59 PM" -> toRawMinutes
-
-    MIN_RAW_MINUTES: 0, // "12:00 AM" -> toRawMinutes
-
     AM: 'AM',
 
     PM: 'PM'
   },
 
   /**
-   * Ensures a given time is valid by observing its raw minutes.
+   * Ensures a given time is valid by observing its time object.
    *
-   * @param {Integer} rawMinutes
-   *    The time value converterd to raw minutes.
+   * @param {Obj} timeObj
+   *    A time object returned from _parseTime.
    *
    * @return {Boolean}
    *    true if valid, false otherwise.
    *
    * @private
    *
-   * @see toRawMinutes
+   * @see _parseTime
    *
    * @this module.exports
    */
-  _getIsTimeValid: function(rawMinutes) {
-    return ((rawMinutes >= this._constants.MIN_RAW_MINUTES) &&
-            (rawMinutes <= this._constants.MAX_RAW_MINUTES));
+  _getIsTimeValid: function(timeObj) {
+    var isHrsValid = (timeObj.hours >= 0 && timeObj.hours <= 12);
+    var isMinsValid = (timeObj.minutes >= 0 && timeObj.minutes <= 60);
+    var isMeridValid = (timeObj.meridian === this._constants.AM ||
+                        timeObj.meridian === this._constants.PM);
+
+    return (isHrsValid && isMinsValid && isMeridValid);
   },
 
   /**
@@ -116,14 +124,16 @@ module.exports = {
    */
   _parseTime: function(timeStr) {
     var timeRE = /(\d{1,2})\:(\d{2})\s{0,1}(AM|PM)/;
-    var timeArray = timeStr.match(timeRE).slice(1, 4);
-    if (timeArray.length !== 3) {
+    var timeArray = timeStr.match(timeRE);
+
+    if (!timeArray || timeArray.length !== 4) {
       return null;
     }
+
     return {
-      hours: parseInt(timeArray[0], 10),
-      minutes: parseInt(timeArray[1], 10),
-      meridian: timeArray[2]
+      hours: parseInt(timeArray[1], 10),
+      minutes: parseInt(timeArray[2], 10),
+      meridian: timeArray[3]
     };
   },
 
