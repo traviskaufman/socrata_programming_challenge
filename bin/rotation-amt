@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+
+// Convert the program name to the relative name of this executable
+var pathComponents = process.argv[1].split('/');
+process.argv[1] = pathComponents[pathComponents.length - 1];
+
+var retCode = require('../lib/cli').run(process.argv.slice(1));
+process.exit(retCode);

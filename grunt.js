@@ -12,7 +12,7 @@ require('shelljs/global');
 module.exports = function(grunt) {
   grunt.initConfig({
     lint: {
-      all: ['./index.js', 'test/*.js', 'grunt.js']
+      all: ['./index.js', 'test/*.js', 'lib/*.js', 'grunt.js']
     }
   });
 
