@@ -37,14 +37,17 @@ describe('The Command-Line Interface', function() {
 
   it("complains if times aren't formatted correctly", function() {
     consoleSpy = spyOn(console, 'error');
+    var err = "Bad Time String(s). Make sure they're formatted " +
+              'as [H]H:MM [AM|PM]';
     cli.run(args.concat(['10:45 AM', 'bogus']));
-    expect(consoleSpy).toHaveBeenCalled();
+    expect(consoleSpy).toHaveBeenCalledWith(err);
   });
 
   it("complains if time doesn't exist", function() {
     consoleSpy = spyOn(console, 'error');
+    var err = 'Invalid time.';
     cli.run(args.concat(['9:00 PM', '20:00 AM']));
-    expect(consoleSpy).toHaveBeenCalled();
+    expect(consoleSpy).toHaveBeenCalledWith(err);
   });
 
   it('displays how many degrees and rotations were necessary', function() {
