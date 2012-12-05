@@ -23,7 +23,7 @@ Installation
 ```sh
 $ git clone https://github.com/traviskaufman/socrata_programming_challenge.git
 $ cd socrata_programming_challenge
-$ npm install . # add -g to install globally so you can use rotation-amt
+$ npm install .
 ```
 
 Run the Tests
